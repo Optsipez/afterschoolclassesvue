@@ -15,7 +15,8 @@
     <div id="app">
         <header>
             <h1 id="title" v-text="sitename"></h1>
-            <button id="checkout_button" v-on:click="showCheckout">
+            <button id="checkout_button" v-on:click="showCheckout" :disabled="cart.length === 0 && showProduct"
+            :class="{ disabled: cart.length === 0 && showProduct}">
                 {{ cartItemCount }}
                 <i class="fas fa-cart-plus"></i> Checkout
             </button>
