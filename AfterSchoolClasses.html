@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
+
 <body>
     <div id="app">
         <header>
             <h1 id="title" v-text="sitename"></h1>
+            <input v-on:input="fetchGetSearch" v-model.trim="query" type="text" name="search" placeholder="Search...">
             <div id="sort-section">
                 <label for="sort-dropdown">Sort by:</label>
                 <select v-model="sortAttribute" id="sort-dropdown" class="sort-dropdown">
@@ -24,10 +27,7 @@
                     {{ isAscending ? 'Ascending' : 'Descending' }}
                 </button>
             </div>
-            <button 
-                id="checkout_button" 
-                v-on:click="showCheckout" 
-                :disabled="cart.length === 0" 
+            <button id="checkout_button" v-on:click="showCheckout" :disabled="cart.length === 0"
                 class="checkout-button">
                 {{ cartItemCount || "0" }}
                 <i class="fas fa-cart-plus"></i> Checkout
@@ -44,15 +44,14 @@
                         <p v-html="classItem.description"></p>
                         <p class="location">Location: {{ classItem.location }}</p>
                         <p class="price">Price: AED {{ classItem.price }}</p>
-                        <p v-if="classItem.availableInventory > 0">Seats available: {{ classItem.availableInventory }}</p>
+                        <p v-if="classItem.availableInventory > 0">Seats available: {{ classItem.availableInventory }}
+                        </p>
                         <p v-else style="color: red;">Class Full</p>
                         <div class="rating">
                             <span v-for="n in classItem.rating" :key="n">★</span>
                             <span v-for="n in 5 - classItem.rating" :key="n">☆</span>
                         </div>
-                        <button 
-                            v-on:click="addToCart(classItem)" 
-                            :disabled="classItem.availableInventory === 0" 
+                        <button v-on:click="addToCart(classItem)" :disabled="classItem.availableInventory === 0"
                             class="enroll-button">
                             {{ classItem.availableInventory === 0 ? "Full" : "Enroll" }}
                         </button>
@@ -79,28 +78,19 @@
                 </div>
                 <p>
                     <label>Full Name:</label>
-                    <input 
-                        v-model.trim="order.fullName" 
-                        type="text" 
-                        placeholder="Enter full name" 
+                    <input v-model.trim="order.fullName" type="text" placeholder="Enter full name"
                         :class="{'invalid': !isValidName && order.fullName !== ''}">
                 </p>
                 <p>
                     <label>Phone Number:</label>
-                    <input 
-                        v-model.number="order.phoneNumber" 
-                        type="number" 
-                        placeholder="Enter phone number" 
+                    <input v-model.number="order.phoneNumber" type="number" placeholder="Enter phone number"
                         :class="{'invalid': !isValidPhoneNumber && order.phoneNumber !== null}">
                 </p>
                 <div id="orderInfoDiv">
                     <h2>Order Preview</h2>
                     <p><strong>Full Name:</strong> {{ order.fullName }}</p>
                     <p><strong>Phone Number:</strong> {{ order.phoneNumber }}</p>
-                    <button 
-                        id="submitButton" 
-                        v-on:click="submitForm" 
-                        :disabled="!isFormValid" 
+                    <button id="submitButton" v-on:click="submitForm" :disabled="!isFormValid"
                         :class="{ 'disabled': !isFormValid }">
                         Place Order
                     </button>
@@ -213,6 +203,16 @@
                         .then(data => { this.classes = data; })
                         .catch(error => console.error("Error fetching products:", error));
                 },
+                fetchGetSearch() {
+                    if (!this.query.trim()) {
+                        this.fetchProducts();
+                    } else {
+                        fetch(`https://after-school-classsesbackend.onrender.com/search/Classes?q=${encodeURIComponent(this.query.trim())}`)
+                            .then(response => response.json())
+                            .then(data => { this.classes = data; })
+                            .catch(error => console.error("Error fetching search results:", error));
+                    }
+                },
                 imageLink(image) {
                     return `https://after-school-classsesbackend.onrender.com/${image}`;
                 }
@@ -223,4 +223,5 @@
         });
     </script>
 </body>
+
 </html>
