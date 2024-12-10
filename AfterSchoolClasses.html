@@ -14,7 +14,7 @@
             <div id="sort-section">
                 <label for="sort-dropdown">Sort by:</label>
                 <select v-model="sortAttribute" id="sort-dropdown" class="sort-dropdown">
-                    <option value="title">Subject</option>
+                    <option value="name">Subject</option>
                     <option value="location">Location</option>
                     <option value="availableInventory">Availability</option>
                     <option value="price">Price</option>
@@ -40,7 +40,7 @@
                         <img v-bind:src="imageLink(classItem.image)" alt="Class Image">
                     </figure>
                     <section>
-                        <h2 v-text="classItem.title"></h2>
+                        <h2 v-text="classItem.name"></h2>
                         <p v-html="classItem.description"></p>
                         <p class="location">Location: {{ classItem.location }}</p>
                         <p class="price">Price: AED {{ classItem.price }}</p>
@@ -66,7 +66,7 @@
                     <div v-for="item in cart" :key="item.class._id" class="cart-item">
                         <img v-bind:src="imageLink(item.class.image)" alt="Class Image" class="cart-image">
                         <div class="cart-details">
-                            <h4 class="cart-title">{{ item.class.title }}</h4>
+                            <h4 class="cart-title">{{ item.class.name }}</h4>
                             <p class="cart-location">Location: {{ item.class.location }}</p>
                             <p class="cart-quantity">Quantity: {{ item.quantity }}</p>
                         </div>
@@ -116,7 +116,7 @@
                 classes: [],
                 cart: [],
                 showClass: true,
-                sortAttribute: "title",
+                sortAttribute: "name",
                 isAscending: true,
                 order: { fullName: "", phoneNumber: null },
                 query: ''
@@ -176,7 +176,7 @@
                         ...this.order,
                         items: this.cart.map(item => ({
                             _id: item.class._id,
-                            title: item.class.title,
+                            name: item.class.name,
                             location: item.class.location,
                             price: item.class.price,
                             orderedQuantity: item.quantity
