@@ -54,7 +54,7 @@
                         </div>
                         <button v-on:click="addToCart(classItem)" :disabled="classItem.availableInventory === 0"
                             class="get-button">
-                            {{ classItem.availableInventory === 0 ? "Full" : "Enroll" }}
+                            {{ classItem.availableInventory === 0 ? "Class Unavailable" : "Get CLass" }}
                         </button>
                     </section>
                 </div>
