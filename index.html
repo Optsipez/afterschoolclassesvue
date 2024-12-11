@@ -17,16 +17,16 @@
             <input v-on:input="fetchGetSearch" v-model.trim="query" type="text" name="search" placeholder="Search...">
             <div id="sort-section">
                 <label for="sort-dropdown">Sort by:</label>
-                <select v-model="sortAttribute" id="sort-dropdown" class="sort-dropdown">
-                    <option value="name">Subject</option>
-                    <option value="location">Location</option>
-                    <option value="availableInventory">Availability</option>
-                    <option value="price">Price</option>
+                <select v-model="sortOption" id="sort-dropdown" class="sort-dropdown">
+                    <option value="name-asc">Classes (Ascending)</option>
+                    <option value="name-desc">Classes (Descending)</option>
+                    <option value="location-asc">Location (Ascending)</option>
+                    <option value="location-desc">Location (Descending)</option>
+                    <option value="availableInventory-asc">Available Inventory (Ascending)</option>
+                    <option value="availableInventory-desc">Available Inventory (Descending)</option>
+                    <option value="price-asc">Price (Ascending)</option>
+                    <option value="price-desc">Price (Descending)</option>
                 </select>
-                <button @click="toggleSortOrder" class="sort-button">
-                    <i :class="isAscending ? 'fas fa-sort-amount-up' : 'fas fa-sort-amount-down'"></i>
-                    {{ isAscending ? 'Ascending' : 'Descending' }}
-                </button>
             </div>
             <button id="checkout_button" v-on:click="showCheckout" :disabled="cart.length === 0"
                 class="checkout-button">
@@ -44,16 +44,16 @@
                         <h2 v-text="classItem.name"></h2>
                         <p v-html="classItem.description"></p>
                         <p class="location">Location: {{ classItem.location }}</p>
-                        <p class="price">Price: AED {{ classItem.price }}</p>
+                        <p class="price">Price: $ {{ classItem.price }}</p>
                         <p v-if="classItem.availableInventory > 0">Seats available: {{ classItem.availableInventory }}
                         </p>
-                        <p v-else style="color: red;">Class Full</p>
+                        <p v-else style="color: rgb(0, 21, 255);">Inventory Over</p>
                         <div class="rating">
                             <span v-for="n in classItem.rating" :key="n">★</span>
                             <span v-for="n in 5 - classItem.rating" :key="n">☆</span>
                         </div>
                         <button v-on:click="addToCart(classItem)" :disabled="classItem.availableInventory === 0"
-                            class="enroll-button">
+                            class="get-button">
                             {{ classItem.availableInventory === 0 ? "Full" : "Enroll" }}
                         </button>
                     </section>
@@ -75,7 +75,7 @@
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
-                    <p class="grand-total">Grand Total: <span>AED {{ totalPrice }}</span></p>
+                    <p class="grand-total">Total: <span>$ {{ totalPrice }}</span></p>
                 </div>
                 <p>
                     <label>Full Name:</label>
@@ -87,15 +87,10 @@
                     <input v-model.number="order.phoneNumber" type="number" placeholder="Enter phone number"
                         :class="{'invalid': !isValidPhoneNumber && order.phoneNumber !== null}">
                 </p>
-                <div id="orderInfoDiv">
-                    <h2>Order Preview</h2>
-                    <p><strong>Full Name:</strong> {{ order.fullName }}</p>
-                    <p><strong>Phone Number:</strong> {{ order.phoneNumber }}</p>
                     <button id="submitButton" v-on:click="submitForm" :disabled="!isFormValid"
                         :class="{ 'disabled': !isFormValid }">
                         Place Order
                     </button>
-                </div>
             </div>
         </main>
     </div>
@@ -107,7 +102,7 @@
                 classes: [],
                 cart: [],
                 showClass: true,
-                sortAttribute: "name",
+                sortOption: "name-asc",
                 isAscending: true,
                 order: { fullName: "", phoneNumber: null },
                 query: ''
@@ -117,12 +112,13 @@
                     return this.cart.reduce((total, item) => total + item.quantity, 0);
                 },
                 sortedClasses() {
+                    const [attribute, order] = this.sortOption.split("-");
                     return [...this.classes].sort((a, b) => {
-                        let aVal = a[this.sortAttribute];
-                        let bVal = b[this.sortAttribute];
+                        let aVal = a[attribute];
+                        let bVal = b[attribute];
                         if (typeof aVal === "string") aVal = aVal.toLowerCase();
                         if (typeof bVal === "string") bVal = bVal.toLowerCase();
-                        return this.isAscending ? (aVal > bVal ? 1 : -1) : (aVal < bVal ? 1 : -1);
+                        return order === "asc" ? (aVal > bVal ? 1 : -1) : (aVal < bVal ? 1 : -1);
                     });
                 },
                 totalPrice() {

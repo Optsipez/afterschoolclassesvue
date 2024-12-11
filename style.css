@@ -128,7 +128,7 @@ header input[type="text"]:focus {
     color: #64748b;
 }
 
-.class-box .enroll-button {
+.class-box .get-button {
     background-color: #2563eb;
     color: #fff;
     padding: 10px 20px;
@@ -137,7 +137,7 @@ header input[type="text"]:focus {
     transition: all 0.3s ease;
 }
 
-.class-box .enroll-button:hover {
+.class-box .get-button:hover {
     background-color: #1e40af;
 }
 
@@ -153,6 +153,13 @@ header input[type="text"]:focus {
     text-align: center;
     font-size: 2rem;
     color: #1e293b;
+}
+.cart-image {
+    width: 100px; /* Set a fixed width */
+    height: 100px; /* Set a fixed height */
+    object-fit: cover; /* Ensures the image maintains aspect ratio */
+    border-radius: 8px; /* Optional: add rounding for aesthetics */
+    margin-right: 10px; /* Add spacing if needed */
 }
 
 /* Buttons */
