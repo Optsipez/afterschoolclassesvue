@@ -45,7 +45,7 @@
                         <p v-html="classItem.description"></p>
                         <p class="location">Location: {{ classItem.location }}</p>
                         <p class="price">Price: $ {{ classItem.price }}</p>
-                        <p v-if="classItem.availableInventory > 0">Seats available: {{ classItem.availableInventory }}
+                        <p v-if="classItem.availableInventory > 0">Available Slots: {{ classItem.availableInventory }}
                         </p>
                         <p v-else style="color: rgb(0, 21, 255);">Inventory Over</p>
                         <div class="rating">
