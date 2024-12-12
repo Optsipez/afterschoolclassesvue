@@ -70,7 +70,7 @@ header input[type="text"]:focus {
     background-color: #4f46e5;
 }
 
-.checkout-button {
+.checkout-switch {
     background-color: #22c55e;
     color: #fff;
     padding: 10px 20px;
@@ -81,12 +81,12 @@ header input[type="text"]:focus {
     transition: background-color 0.3s ease;
 }
 
-.checkout-button:disabled {
+.checkout-switch:disabled {
     background-color: #d1d5db;
     cursor: not-allowed;
 }
 
-.checkout-button:hover:not(:disabled) {
+.checkout-switch:hover:not(:disabled) {
     background-color: #16a34a;
 }
 

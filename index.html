@@ -14,7 +14,7 @@
     <div id="app">
         <header>
             <h1 id="title" v-text="sitename"></h1>
-            <input v-on:input="fetchGetSearch" v-model.trim="query" type="text" name="search" placeholder="Search...">
+            <input v-on:input="fetchSearch" v-model.trim="query" type="text" name="search" placeholder="Search...">
             <div id="sort-section">
                 <label for="sort-dropdown">Sort by:</label>
                 <select v-model="sortOption" id="sort-dropdown" class="sort-dropdown">
@@ -28,8 +28,8 @@
                     <option value="price-desc">Price (Descending)</option>
                 </select>
             </div>
-            <button id="checkout_button" v-on:click="showCheckout" :disabled="cart.length === 0"
-                class="checkout-button">
+            <button id="checkout-btn" v-on:click="showCheckout" :disabled="cart.length === 0"
+                class="checkout-switch">
                 {{ cartItemCount || "0" }}
                 <i class="fas fa-cart-plus"></i> Checkout
             </button>
@@ -70,7 +70,7 @@
                             <p class="cart-location">Location: {{ item.class.location }}</p>
                             <p class="cart-quantity">Quantity: {{ item.quantity }}</p>
                         </div>
-                        <p class="cart-total">Total: AED {{ item.class.price * item.quantity }}</p>
+                        <p class="cart-total">Total: $ {{ item.class.price * item.quantity }}</p>
                         <button class="remove-item-btn" v-on:click="removeFromCart(item.class)">
                             <i class="fas fa-trash-alt"></i>
                         </button>
@@ -79,13 +79,13 @@
                 </div>
                 <p>
                     <label>Full Name:</label>
-                    <input v-model.trim="order.fullName" type="text" placeholder="Enter full name"
-                        :class="{'invalid': !isValidName && order.fullName !== ''}">
+                    <input v-model.trim="order.Name" type="text" placeholder="Enter full name"
+                        :class="{'invalid': !isValidName && order.Name !== ''}">
                 </p>
                 <p>
                     <label>Phone Number:</label>
-                    <input v-model.number="order.phoneNumber" type="number" placeholder="Enter phone number"
-                        :class="{'invalid': !isValidPhoneNumber && order.phoneNumber !== null}">
+                    <input v-model.number="order.Number" type="number" placeholder="Enter phone number"
+                        :class="{'invalid': !isValidNumber && order.Number !== null}">
                 </p>
                     <button id="submitButton" v-on:click="submitForm" :disabled="!isFormValid"
                         :class="{ 'disabled': !isFormValid }">
@@ -104,7 +104,7 @@
                 showClass: true,
                 sortOption: "name-asc",
                 isAscending: true,
-                order: { fullName: "", phoneNumber: null },
+                order: { Name: "", Number: null },
                 query: ''
             },
             computed: {
@@ -125,13 +125,13 @@
                     return this.cart.reduce((total, item) => total + item.class.price * item.quantity, 0);
                 },
                 isValidName() {
-                    return /^[a-zA-Z\s]+$/.test(this.order.fullName) && this.order.fullName.trim().length > 1;
+                    return /^[a-zA-Z\s]+$/.test(this.order.Name) && this.order.Name.trim().length > 1;
                 },
-                isValidPhoneNumber() {
-                    return /^\d{9,}$/.test(this.order.phoneNumber);
+                isValidNumber() {
+                    return /^\d{9,}$/.test(this.order.Number);
                 },
                 isFormValid() {
-                    return this.isValidName && this.isValidPhoneNumber;
+                    return this.isValidName && this.isValidNumber;
                 }
             },
             methods: {
@@ -176,11 +176,11 @@
                     })
                         .then(() => {
                             alert("Order placed successfully!");
-                            this.fetchPutUpdate();
+                            this.fetchUpdate();
                         })
                         .catch(error => console.error("Error submitting order:", error));
                 },
-                fetchPutUpdate() {
+                fetchUpdate() {
                     const promises = this.cart.map(item => {
                         const updatedSeats = { availableInventory: item.class.availableInventory };
                         return fetch(`https://after-school-classsesbackend.onrender.com/collection/Classes/${item.class._id}`, {
@@ -200,7 +200,7 @@
                         .then(data => { this.classes = data; })
                         .catch(error => console.error("Error fetching products:", error));
                 },
-                fetchGetSearch() {
+                fetchSearch() {
                     if (!this.query.trim()) {
                         this.fetchProducts();
                     } else {
