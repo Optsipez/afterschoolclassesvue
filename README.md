@@ -66,9 +66,8 @@ API: **[Backend on Render](https://after-school-classsesbackend.onrender.com/col
 ## 👨‍💻 Author
 
 **Vishesh Mundra**
-🔗 [LinkedIn](#)
-📧 \[Your Email]
+🔗 [LinkedIn](www.linkedin.com/in/visheshh-mundra-231518254)
+📧 \[visheshmundra@gmail.com](mailto:visheshmundra@gmail.com)
 
 ---
 
-Let me know when you're ready and I’ll send the matching backend `README.md`.
