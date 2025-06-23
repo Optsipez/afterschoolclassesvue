@@ -3,6 +3,7 @@
 A Vue.js-based web application for students and parents to explore and purchase after-school classes and activities.
 
 Live Site: **[GitHub Pages Deployment](https://optsipez.github.io/afterschoolclassesvue/)**
+
 API: **[Backend on Render](https://after-school-classsesbackend.onrender.com/collection/Classes)**
 
 ---
